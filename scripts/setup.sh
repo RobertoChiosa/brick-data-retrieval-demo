@@ -1,9 +1,9 @@
 set -e
 # loads the schema into the database
-docker exec -i timescaledb psql -U postgres < schema.sql
+docker exec -i timescaledb psql -U postgres < scripts/schema.sql
 
 # copy data files
-#mv bldg1/bldg1.ttl .
+# mv bldg1/bldg1.ttl .
 docker cp bldg2 timescaledb:/data
 # load all data files into timescaledb
 for csvfile in `docker exec timescaledb /bin/ls /data`; do

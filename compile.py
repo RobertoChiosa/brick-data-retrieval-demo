@@ -2,9 +2,12 @@ import brickschema
 import time
 import sys
 
+# gets the filename as command line argument
 filename = sys.argv[1]
 
-bldg = brickschema.Graph(load_brick_nightly=True)
+# loads the last version of brick schema
+bldg = brickschema.Graph()
+# adds the filename in the graph
 bldg.load_file(filename)
 
 # "compile" the graph
