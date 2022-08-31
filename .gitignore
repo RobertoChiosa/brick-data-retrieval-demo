@@ -9,6 +9,7 @@
 .local
 .jupyter
 .ipython
+.bldg2
 # User-specific stuff
 .idea/**/workspace.xml
 .idea/**/tasks.xml
@@ -366,3 +367,4 @@ rsconnect/
 
 # End of https://www.toptal.com/developers/gitignore/api/r,intellij,python,macos
 /brick-data-retrieval-demo/.ipython/
+/bldg2/
