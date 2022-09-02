@@ -1,7 +1,9 @@
 # brick-data-retrieval-demo
 
 This is a tutorial on how to perform queries on `.ttl` brick schema file using `jupiter` notebook and retrieve
-the `uuid` of the relative timeseries froma a `timescaleDB` deployed locally on `docker` container.
+the `uuid` of the relative timeseries froma a `timescaleDB` deployed locally on `docker` container. The following figure shows an example of result.
+
+![Example of timeseries from query on timescald db and brick model](./img/download.png "Example of timeseries from query on timescald db and brick model")
 
 In this folder is contained the code referring to the
 repository [brick-data-retrieval-demo](https://github.com/gtfierro/brick-data-retrieval-demo) and explained
@@ -52,9 +54,7 @@ in [this tutorial video](https://www.youtube.com/watch?v=kZYNXoiM8gk)
 ## Data analysis
 
 The data exploration process is performed through the jupiter notebook `DataRetrieval.ipynb`. A basic sparql query on
-the brick schema and data retrieval from the timescale db is performed. The following figure shows an example of result.
-
-![Example of timeseries from query on timescald db and brick model](./img/download.png "Example of timeseries from query on timescald db and brick model")
+the brick schema and data retrieval from the timescale db is performed. Feel free to change the query, parameters and variables to get different timeseries.
 
 ## Shutdown
 
