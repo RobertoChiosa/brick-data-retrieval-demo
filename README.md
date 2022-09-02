@@ -52,7 +52,9 @@ in [this tutorial video](https://www.youtube.com/watch?v=kZYNXoiM8gk)
 ## Data analysis
 
 The data exploration process is performed through the jupiter notebook `DataRetrieval.ipynb`. A basic sparql query on
-the brick schema is performed and data retrieval from the timescale db is performed.
+the brick schema and data retrieval from the timescale db is performed. The following figure shows an example of result.
+
+![Example of timeseries from query on timescald db and brick model](./img/download.png "Example of timeseries from query on timescald db and brick model")
 
 ## Shutdown
 
