@@ -1,9 +1,1 @@
-brickschema==0.6.0
-reasonable==0.1.65
-rdflib==6.2.0
-pandas==1.4.3
-psycopg2-binary==2.9.3
-python-dotenv==0.20.0
-matplotlib==3.5.3
-
-
+brickschema==0.7.0
