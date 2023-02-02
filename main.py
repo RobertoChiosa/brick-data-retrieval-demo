@@ -58,6 +58,7 @@ if __name__ == '__main__':
         password=Config.TIMESCALEDB_PSW,
         host=Config.TIMESCALEDB_HOST,
         port=Config.TIMESCALEDB_PORT)
+
     uuids = [sat_uuid, sp_uuid]
     names = ['sat', 'sp']
     # perform query on the timescale db

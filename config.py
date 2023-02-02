@@ -41,7 +41,7 @@ class AppConfig:
     TIMESCALEDB_PSW: str
     TIMESCALEDB_PORT: str
     POSTGRES_PASSWORD: str
-    JUPYTER_TOKEN: str
+    VOLUME_NAME: str
 
     """
     Map environment variables to class fields according to these rules:
