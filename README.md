@@ -56,35 +56,41 @@ in [this tutorial video](https://www.youtube.com/watch?v=kZYNXoiM8gk)
     ```
    This command creates the database schema and tables based on the script `schema.sql`
 
-## Maintenance
+## Operation
 
-To avoid to reload the csv files each time you create the container it is suggested to create a volume to mount when the
-new container is created. Once the container is running, get the current volume name or mount path with this command,
-and record it to use when you perform the upgrade.
+There are some tips for the maintenance:
 
-```bash
-docker inspect timescaledb --format='{{range .Mounts }}{{.Name}}{{end}}'
-# should be something like -> 069ba64815f0c26783b81a5f0ca813227fde8491f429cf77ed9a5ae3536c0b2c
-```
+1. **Persistence storage**: To avoid to reload the csv files each time you create the container it is suggested to
+   create a volume to mount when
+   the
+   new container is created. Once the container is running, get the current volume name or mount path with this command,
+   and record it to use when you perform the upgrade.
 
-Copy the volume name in the VOLUME_NAME in the `.env` file. Now you know the name of the volume and you can mount it on
-the next run using the following script.
+   ```bash
+   docker inspect timescaledb --format='{{range .Mounts }}{{.Name}}{{end}}'
+   # should be something like -> 069ba64815f0c26783b81a5f0ca813227fde8491f429cf77ed9a5ae3536c0b2c
+   ```
 
-```bash
-./scripts/start_docker_containers.sh
-```
+   Copy the volume name in the VOLUME_NAME in the `.env` file. Now you know the name of the volume and you can mount it
+   on
+   the next run using the following script.
 
-when start the container you can run
+   ```bash
+   ./scripts/start_docker_containers.sh
+   ```
 
-Copy
-Get the current name or mount path with this command, and record it to use when you perform the upgrade. Make sure you
-copy the correct command, based on your mount point type.
+2. **Requirements**: Export requirements using `pipreqs` that scans the `.py` files in the project and generates
+   the `requirements.txt` file the file
+   ```bash
+   pipreqs . --force
+   ```
 
-Export requirements
-
-```bash
-pipreqs . --force
-```
+3. **Shutdown**: The `scripts/cleanup.sh` script will delete the docker containers and network and you can run the
+   start/setup scripts
+   again.
+   ```bash
+   ./scripts/cleanup_docker_containers.sh
+   ```
 
 ## Data analysis
 
@@ -92,11 +98,3 @@ The data exploration process is performed through the jupiter notebook `DataRetr
 the brick schema and data retrieval from the timescale db is performed. Feel free to change the query, parameters and
 variables to get different timeseries.
 
-## Shutdown
-
-The `scripts/cleanup.sh` script will delete the docker containers and network and you can run the start/setup scripts
-again
-
-```bash
-./scripts/cleanup_docker_containers.sh
-```

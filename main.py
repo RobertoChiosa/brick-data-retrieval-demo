@@ -22,14 +22,17 @@ from utils import *
 
 if __name__ == '__main__':
 
+    # path to ttl file
     ttl_compiled_file = "ttl/compiled-bldg2.ttl"
 
     # Compile ttl if needed
     if not os.path.exists(ttl_compiled_file):
         compile_ttl(input_filepath="ttl/bldg2.ttl", output_filepath=ttl_compiled_file)
 
+    # load ttl in brick graph
     g = brickschema.Graph().load_file(ttl_compiled_file)
 
+    # query supply air temperature and setpoint and relative uuid
     q = """
     SELECT DISTINCT ?ahu ?sat ?sp ?sat_uuid ?sp_uuid WHERE {
        ?ahu  a  brick:AHU .
@@ -40,42 +43,53 @@ if __name__ == '__main__':
              brick:timeseries [ brick:hasTimeseriesId ?sp_uuid ]
     }
     """
+
+    # performs the query on the model
+    res = g.query(q)
     # transform query into dataframe
-    # md = sparql_to_df(g, q)
-    res = g.query(q)  # performs the query on the model
-    df = pd.DataFrame.from_records(list(res))  # transforms the results into dataframe
-    df = df.applymap(str)  # transforms all to string
-    df.drop_duplicates(inplace=True)  # drops duplicates
-    df.columns = ['ahu', "sat", "sp", "sat_uuid", "sp_uuid"]
-    df.head()
+    df_brick = pd.DataFrame.from_records(
+        data=list(res), columns=['ahu', "sat", "sp", "sat_uuid", "sp_uuid"])
+    # transforms all to string
+    df_brick = df_brick.applymap(str)
+    # drops duplicates
+    df_brick.drop_duplicates(inplace=True)
+    # let say that i want to analyze the first
+    ahu, sat, sp, sat_uuid, sp_uuid = df_brick.values[1]
 
-    ahu, sat, sp, sat_uuid, sp_uuid = df.values[1]
-    # df = get_data([sat_uuid, sp_uuid], ['sat', 'sp'])
+    # connect to local TimescaleDB
+    try:
+        dbRemote = psycopg2.connect(
+            user=Config.TIMESCALEDB_USER,
+            password=Config.TIMESCALEDB_PSW,
+            host=Config.TIMESCALEDB_HOST,
+            port=Config.TIMESCALEDB_PORT)
 
-    # creates connection
-    dbRemote = psycopg2.connect(
-        user=Config.TIMESCALEDB_USER,
-        password=Config.TIMESCALEDB_PSW,
-        host=Config.TIMESCALEDB_HOST,
-        port=Config.TIMESCALEDB_PORT)
+        # opens connection and perform query
+        with dbRemote.cursor() as cursorRemote:
+            cursorRemote.execute("""SELECT time, value, uuid 
+                                    FROM data 
+                                    WHERE uuid in {}
+                                    """.format(tuple([sat_uuid, sp_uuid])))
+            result_list = cursorRemote.fetchall()
 
-    uuids = [sat_uuid, sp_uuid]
-    names = ['sat', 'sp']
-    # perform query on the timescale db
-    query = "SELECT time, value, uuid FROM data WHERE uuid = ANY(%s)"
-    df = pd.read_sql(query, dbRemote, params=(uuids,))  # reads from db remote
-    df = df.pivot(columns='uuid', values='value', index='time')  # explicit column structure
-    df = df.resample('15T').mean()  # synchronize the timestamp to 15 minutes
-    df.columns = names
+        # convert query result to dataframe
+        df1 = pd.DataFrame(result_list, columns=['time', 'value', 'uuid'])
+        # explicit column structure
+        df1 = df1.pivot(columns='uuid', values='value', index='time')
+        # synchronize the timestamp to 15 minutes
+        df1 = df1.resample('15T').mean()
+        # rename
+        df1.columns = ["sat", "sp"]
 
-    print(df.head())
+        # fig = plt.figure()  # an empty figure with no Axes
+        fig, ax = plt.subplots(figsize=(8, 3), layout='constrained')  # a figure with a single Axes
+        ax.plot(df1['2012-06-04':'2012-06-08']['sp'], linestyle='-', label='Supply Air Temperature')
+        ax.plot(df1['2012-06-04':'2012-06-08']['sat'], linestyle=':', label='Set Point Air Temperature')
+        ax.set_ylabel('Temperature [°F]')
+        ax.set_title("AHU02 Air temperature")  # Add a title to the axes.
+        ax.legend()  # Add a legend.
+        # fig.show()
+        plt.savefig("img/download.png")
 
-    # fig = plt.figure()  # an empty figure with no Axes
-    fig, ax = plt.subplots(figsize=(10, 5), layout='constrained')  # a figure with a single Axes
-    ax.plot(df['2012-06-01':'2012-06-5']['sp'], linestyle='-', label='Supply Air Temperature')
-    ax.plot(df['2012-06-01':'2012-06-5']['sat'], linestyle=':', label='Set Point Air Temperature')
-    ax.set_xlabel('Time')
-    ax.set_ylabel('Temperature [°F]')
-    ax.set_title("AHU Air temperature")  # Add a title to the axes.
-    ax.legend()  # Add a legend.
-    fig.show()
+    except Exception as e:
+        logger.error(f"Error when connecting to database: {e}")
