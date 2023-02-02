@@ -6,6 +6,12 @@ shows an example of result.
 
 ![Framework](./img/framework.png "Framework")
 
+The data exploration process is performed through the python script [`main.py`](main.py). A basic sparql query on
+the brick schema and data retrieval from the timescale db is performed. Feel free to change the query, parameters and
+variables to get different timeseries.
+
+![Example of timeseries from query on timescald db and brick model](./img/result.png "Example of timeseries from query on timescald db and brick model")
+
 In this folder is contained the code referring to the
 repository [brick-data-retrieval-demo](https://github.com/gtfierro/brick-data-retrieval-demo) and explained
 in [this tutorial video](https://www.youtube.com/watch?v=kZYNXoiM8gk)
@@ -85,13 +91,4 @@ There are some useful tips when deploying the services and code development:
    ```bash
    ./scripts/cleanup_docker_containers.sh
    ```
-
-## Data analysis
-
-The data exploration process is performed through the python script [`main.py`](main.py). A basic sparql query on
-the brick schema and data retrieval from the timescale db is performed. Feel free to change the query, parameters and
-variables to get different timeseries.
-
-![Example of timeseries from query on timescald db and brick model](./img/result.png "Example of timeseries from query on timescald db and brick model")
-
 
