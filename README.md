@@ -21,13 +21,7 @@ in [this tutorial video](https://www.youtube.com/watch?v=kZYNXoiM8gk)
    pip install -r requirements.txt
    ```
 
-3. Compile the brick model. This is a necessary step to simplify queries on the model (to do only when the brick model
-   changes).Execute the following command:
-   ```bash 
-   python compile.py bldg2.ttl
-   ```
-
-4. Create an `.env` file in the root directory and set up the environmental variables. All the scripts secrets have as
+3. Create an `.env` file in the root directory and set up the environmental variables. All the scripts secrets have as
    reference the env file in the root folder and the file should be like the `example.env` file:
    ```bash 
    touch .env
@@ -40,22 +34,22 @@ in [this tutorial video](https://www.youtube.com/watch?v=kZYNXoiM8gk)
    JUPYTER_TOKEN=mypassword" > .env
    ```
 
-5. Unzip data files contained in `bldg2-data.zip`. Execute the following command:
+4. Unzip data files contained in `bldg2-data.zip`. Execute the following command:
     ```bash
     unzip data.zip
     ```
 
-6. Start docker containers. This action requires that you have [Docker](https://www.docker.com/) installed on your
+5. Start docker containers. This action requires that you have [Docker](https://www.docker.com/) installed on your
    machine. Create containers by running the following command:
     ```bash
     ./scripts/start_docker_containers.sh
     ```
-7. Check whether the docker containers are running through this command:
+6. Check whether the docker containers are running through this command:
     ```bash
     docker ps
     ```
 
-8. Load timeseries data in the timescal DB. This command creates the database schema and tables based on the
+7. Load timeseries data in the timescal DB. This command creates the database schema and tables based on the
    script `schema.sql`
     ```bash
     ./scripts/setup_docker_timescaledb.sh
