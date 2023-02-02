@@ -89,7 +89,7 @@ if __name__ == '__main__':
         ax.set_title("AHU02 Air temperature")  # Add a title to the axes.
         ax.legend()  # Add a legend.
         # fig.show()
-        plt.savefig("img/download.png")
+        plt.savefig("img/result.png")
 
     except Exception as e:
         logger.error(f"Error when connecting to database: {e}")
