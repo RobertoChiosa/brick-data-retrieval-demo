@@ -1,16 +1,21 @@
 # Brick data retrieval demo using Timescale DB and Docker
 
 This is a tutorial on how to perform queries on `.ttl` brick schema and retrieve
-the `uuid` of the relative timeseries froma a `timescaleDB` deployed locally on `docker` container. The following figure
-shows an example of result.
-
-![Framework](./img/framework.png "Framework")
-
-In this folder is contained the code referring to the
+the `uuid` of the relative timeseries froma a `timescaleDB` deployed locally on `docker` container. It is based on the code contained in the
 repository [brick-data-retrieval-demo](https://github.com/gtfierro/brick-data-retrieval-demo) and explained
-in [this tutorial video](https://www.youtube.com/watch?v=kZYNXoiM8gk)
+in [this tutorial video](https://www.youtube.com/watch?v=kZYNXoiM8gk).  The following figure shows the general infrastructure setup. 
+<p align="center">
+  <img width="800" src="./img/framework.png">
+</p>
 
-## Setup
+A timeseries database is deployed using Docker container and data from static csv files are loaded on the database. The data exploration process is performed through the python script [`main.py`](main.py). A basic sparql query on a brick schema and data retrieval from the timescale db is performed.
+
+<p align="center">
+  <img width="800" src="./img/result.png">
+</p>
+
+
+## :hammer: Setup
 
 1. Create virtual environment in the root folder and activate
    ```bash 
@@ -57,7 +62,7 @@ in [this tutorial video](https://www.youtube.com/watch?v=kZYNXoiM8gk)
     ```
    This command creates the database schema and tables based on the script [`schema.sql`](./scripts/schema.sql)
 
-## Operation
+## :bulb: Tips
 
 There are some useful tips when deploying the services and code development:
 
@@ -86,12 +91,8 @@ There are some useful tips when deploying the services and code development:
    ./scripts/cleanup_docker_containers.sh
    ```
 
-## Data analysis
+## :books: References
 
-The data exploration process is performed through the python script [`main.py`](main.py). A basic sparql query on
-the brick schema and data retrieval from the timescale db is performed. Feel free to change the query, parameters and
-variables to get different timeseries.
-
-![Example of timeseries from query on timescald db and brick model](./img/result.png "Example of timeseries from query on timescald db and brick model")
-
-
+* [Brick schema](https://brickschema.org/)
+* [Docker](https://www.docker.com/)
+* [TimescaleDB](https://www.timescale.com/)
