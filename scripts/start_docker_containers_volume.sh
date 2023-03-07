@@ -13,5 +13,5 @@ docker run -d \
   --name timescaledb \
   -p 127.0.0.1:5432:5432 \
   -e POSTGRES_PASSWORD="$POSTGRES_PASSWORD" \
-  -v "$VOLUME_NAME$":/var/lib/postgresql/data \
+  -v "$VOLUME_NAME":/var/lib/postgresql/data \
   timescale/timescaledb:latest-pg12

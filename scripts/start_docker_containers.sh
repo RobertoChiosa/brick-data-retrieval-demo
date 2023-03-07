@@ -1,4 +1,5 @@
 # Export environment variables from the .env file, excluding commented lines.
+# shellcheck disable=SC2046
 export $(grep -v '^#' .env | xargs)
 
 # Create a custom Docker network "brick-portable-app".
